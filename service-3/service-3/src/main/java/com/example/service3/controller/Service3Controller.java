@@ -1,6 +1,7 @@
 package com.example.service3.controller;
 
 import com.example.service3.Payload;
+import com.example.service3.service.Service3Class;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/service3")
 @Validated
 public class Service3Controller {
-    private static final Logger logger= LoggerFactory.getLogger(Service3Controller.class);
+    private final Service3Class service;
+
+    public Service3Controller(Service3Class service){
+        this.service=service;
+    }
 
     @PostMapping("/name")
-    public ResponseEntity<String> processName(@Valid @RequestBody Payload payload){
-        logger.info("Received payload: {}", payload);
-        String concatenatedName= payload.getName() + " " + payload.getSurname();
-        return ResponseEntity.ok(concatenatedName);
+    public ResponseEntity<String> concatenateName(@Valid @RequestBody Payload payload){
+        return service.concatenateName(payload);
     }
 }
